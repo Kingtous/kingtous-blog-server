@@ -5,8 +5,12 @@ import cn.kingtous.blogserver.blog.repository.PagesRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import java.sql.Time
+import java.util.*
+import kotlin.math.min
 
 @RestController
 public class PageController {
@@ -15,7 +19,7 @@ public class PageController {
     private lateinit var pagesRepository: PagesRepository
 
     private val perPageCount = 10
-    private val contentDescCount = 50
+    private val contentDescCount = 128
 
     /**
      * 获取文章
@@ -32,11 +36,12 @@ public class PageController {
             defaultValue = "0"
         ) pageIndex: Int
     ): Page<Pages> {
-        val pages = pagesRepository.findAll(PageRequest.of(pageIndex, perPageCount))
+        val pages = pagesRepository.findAll(PageRequest.of(pageIndex, perPageCount, Sort.by(Sort.Order.desc("createDate"))))
         pages.forEach{
-            it.content = it.content.substring(0,contentDescCount)
+            val dataDecoded = Base64.getDecoder().decode(it.content)
+            it.content = String(Arrays.copyOfRange(dataDecoded,0,contentDescCount))
         }
-        return pagesRepository.findAll(PageRequest.of(pageIndex, perPageCount))
+        return pages
     }
 
     /**
@@ -44,7 +49,12 @@ public class PageController {
      */
     @GetMapping(value = ["/blog/search"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun searchPages(@RequestParam(value = "offset", required = true) offset: Int,@RequestParam(value = "keyword", required = true) keyword: String): Page<Pages> {
-        return pagesRepository.findAllByTitleLikeOrSubtitleLikeOrContentLike(keyword,keyword,keyword,PageRequest.of(offset,perPageCount))
+        val pages =  pagesRepository.findAllByTitleLikeOrSubtitleLike(keyword,keyword,Base64.getEncoder().encodeToString(keyword.toByteArray()),PageRequest.of(offset,perPageCount))
+        pages.forEach {
+            val dataDecoded = Base64.getDecoder().decode(it.content)
+            it.content = String(Arrays.copyOfRange(dataDecoded,0,contentDescCount))
+        }
+        return pages
     }
 
     /**

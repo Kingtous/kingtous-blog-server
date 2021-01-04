@@ -19,7 +19,7 @@ class BlogTest {
 
     @Test
     public fun testSearch(){
-        val result = repository.findAllByTitleLikeOrSubtitleLikeOrContentLike("测试","测试","测试",PageRequest.of(0,10))
+        val result = repository.findAllByTitleLikeOrSubtitleLike("测试","测试","测试",PageRequest.of(0,10))
         System.out.println(result)
     }
 

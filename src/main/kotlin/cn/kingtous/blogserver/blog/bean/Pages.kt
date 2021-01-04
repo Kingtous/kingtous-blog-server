@@ -1,19 +1,16 @@
 package cn.kingtous.blogserver.blog.bean
 
 import org.springframework.context.annotation.Primary
-import java.sql.Date
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import java.util.*
+import javax.persistence.*
 
 @Entity
 public class Pages {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var pageId: Int = 0
 
-    var createDate: Date = Date(0)
+    var createDate: Date = Date()
 
     var title: String = ""
 
@@ -21,5 +18,6 @@ public class Pages {
 
     var tags: String = ""
 
+    @Column(columnDefinition = "mediumtext")
     var content: String = ""
 }

@@ -15,8 +15,8 @@ public interface PagesRepository : CrudRepository<Pages, Int> {
     fun findPagesByContent(content: String): Iterator<Pages>
 
 
-    @Query(value = "select * from Pages as p where p.title like CONCAT('%',:title,'%') or p.subtitle like CONCAT('%',:subtitle,'%') or p.content like CONCAT('%',:content,'%')",nativeQuery = true)
-    fun findAllByTitleLikeOrSubtitleLikeOrContentLike(
+    @Query(value = "select * from pages as p where p.title like CONCAT('%',:title,'%') or p.subtitle like CONCAT('%',:subtitle,'%') or p.content like CONCAT('%',:content,'%')",nativeQuery = true)
+    fun findAllByTitleLikeOrSubtitleLike(
         content: String,
         title: String,
         subtitle: String,
