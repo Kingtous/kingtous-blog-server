@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "img-upload.qiniu.domain",
+      "type": "java.lang.String",
+      "description": "Description for img-upload.qiniu.domain.",
+      "defaultValue": "please set your domain in application.properties"
+    },
+    {
+      "name": "img-upload.qiniu.accessKey",
+      "type": "java.lang.String",
+      "description": "Description for img-upload.qiniu.accessKey.",
+      "defaultValue": "please set your accessKey in application.properties"
+    },
+    {
+      "name": "img-upload.qiniu.secretKey",
+      "type": "java.lang.String",
+      "description": "Description for img-upload.qiniu.secretKey.",
+      "defaultValue": "please set your secretKey in application.properties"
+    },
+    {
+      "name": "img-upload.qiniu.bucket",
+      "type": "java.lang.String",
+      "description": "Description for img-upload.qiniu.bucket.",
+      "defaultValue": "please set your qiniu bucket in application.properties"
+    }
+  ]
+}
