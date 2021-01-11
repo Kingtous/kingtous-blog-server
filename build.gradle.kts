@@ -20,7 +20,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("junit:junit:4.12")
     compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3")

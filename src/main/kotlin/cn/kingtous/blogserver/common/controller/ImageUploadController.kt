@@ -1,7 +1,10 @@
 package cn.kingtous.blogserver.common.controller
 
+import cn.kingtous.blogserver.blog.repository.PagesRepository
+import cn.kingtous.blogserver.common.constants.UploadProperties
 import cn.kingtous.blogserver.common.constants.UrlConstants
 import cn.kingtous.blogserver.common.utils.QiNiuUtils
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import java.util.HashMap
 
@@ -27,8 +30,12 @@ import java.io.File
 @Controller
 class ImageUploadController {
 
+    @Autowired
+    private lateinit var uploadProperties : UploadProperties
 
-    // TODO 接入七牛云
+    @Autowired
+    private lateinit var pagesRepository: PagesRepository
+
     @RequestMapping(value = ["/img/upload"], method = [RequestMethod.POST])
     @ResponseBody
     fun uploadImg(
@@ -36,11 +43,11 @@ class ImageUploadController {
         request: HttpServletRequest
     ): Map<String, Any>? {
         // TODO 鉴权
-        val url = QiNiuUtils.uploadImage(multipartFile)
+        val url = QiNiuUtils.uploadImage(uploadProperties,multipartFile)
         return if (url.isEmpty()){
             // 返回的数据结果
             val result: MutableMap<String, Any> = HashMap()
-            result["success"] = -1
+            result["success"] = 0
             result["message"] = "图片上传失败"
             result
         } else {

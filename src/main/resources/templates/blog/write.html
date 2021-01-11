@@ -6,14 +6,55 @@
     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <link rel="stylesheet" href="/editormd/css/editormd.css"/>
     <script src="/editormd/editormd.js"></script>
+    <script src="/js/base64.min.js"></script>
 </head>
 <body>
-<div id="markdown-editor">
+<form id="blog-submit">
+    <p>标题：<input type="text" name="title" id="title"></p>
+    <p>副标题：<input type="text" name="subtitle" id="subtitle"></p>
+    <p>TAGs：<input type="text" name="tags" id="tags"></p>
+    <p>密码：<input type="password" name="tags" id="passwd"></p>
+
     <textarea id="markdown-placeholder" style="display: none"></textarea>
+    <a onclick="submit()" href="#">提交博客</a>
+</form>
+<div id="markdown-editor">
+
 </div>
 <script>
+    let testEditor;
+
+    function submit(){
+        console.log("submitting...")
+        let title = $("#title").val()
+        let subtitle = $("#subtitle").val()
+        let tags = $("#tags").val()
+        let passwd = $("#passwd").val()
+        let content = Base64.encode(testEditor.getMarkdown())
+        $.ajax({
+         url: "/blog/write",
+         dataType: "json",
+         data: {
+             "title" : title,
+             "subtitle" : subtitle,
+             "tags" : tags,
+             "content" : content,
+             "token" : passwd
+         }   ,
+            type: "POST",
+            success: function (resp) {
+                if (resp.code === 0){
+                    alert("ok")
+                } else {
+                    alert(resp.message)
+                }
+            },
+        }
+        )
+    }
+
     $(function () {
-        var testEditor = editormd("markdown-editor", {
+        testEditor = editormd("markdown-editor", {
             width: "90%",
             height: 640,
             markdown: "开始写你的博客吧",
@@ -25,7 +66,7 @@
             //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为 #fff
             imageUpload: true,
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "/upload",
+            imageUploadURL: "/img/upload",
 
             /*
              上传的后台只需要返回一个 JSON 数据，结构如下：

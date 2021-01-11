@@ -9,10 +9,7 @@ import org.springframework.stereotype.Component
 import javax.crypto.SecretKey
 
 @Configuration
-@ConfigurationProperties(prefix = "qiniu")
-class UploadProperties {
-    var domain: String? = null
-    var accessKey: String? = null
-    var secretKey: String? = null
-    var bucket: String? = null
+@ConfigurationProperties(prefix = "token")
+class TokenProperties {
+    var blogPost: String? = null
 }
